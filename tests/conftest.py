@@ -35,3 +35,9 @@ def setup(request, get_webdriver):
     yield driver
     driver.quit()
 
+
+@pytest.fixture
+def dev_tools_listening():
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(executable_path='C:/chromedriver', options=options)

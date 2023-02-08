@@ -16,5 +16,5 @@ class TestHomepage:
         for indx in range(8):
             homepage_nav.get_nav_links()[indx].click()
             homepage_nav.driver.delete_all_cookies()
-            time.sleep(3)
+            time.sleep(1.5)
 
