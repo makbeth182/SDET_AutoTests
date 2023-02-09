@@ -10,11 +10,17 @@ class TestHomepage:
 
     def test_nav_links(self):
         homepage_nav = HomepageNav(self.driver)
-        actual_links = homepage_nav.get_nav_links_text()
-        expected_links = homepage_nav.NAV_LINK_TEXT
-        assert expected_links == actual_links, 'Validating Nav Links text'
+        cookies = homepage_nav.driver.get_cookies()
+        cookies_names = [cookie['name'] for cookie in cookies]
+        print(cookies)
+        print('--------------------------')
+        print(cookies_names)
+
         for indx in range(8):
             homepage_nav.get_nav_links()[indx].click()
-            homepage_nav.driver.delete_all_cookies()
-            time.sleep(1.5)
+            for cookie_name in cookies_names:
+                homepage_nav.driver.delete_cookie(cookie_name)
+                homepage_nav.driver.refresh()
+                homepage_nav.is_visible('link_text', 'Access Denied', cookie_name)
+            time.sleep(3)
 

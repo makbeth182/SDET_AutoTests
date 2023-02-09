@@ -1,2 +1,6 @@
 /.pytest_cache/
 /venv/
+/base/__pycache__/
+/pom/__pycache__/
+/tests/__pycache__/
+
