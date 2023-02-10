@@ -2,6 +2,9 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as chrome_options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.event_firing_webdriver import EventFiringWebDriver
+
+from abstract.selenium_listener import MyListener
 
 
 @pytest.fixture
@@ -23,11 +26,12 @@ def get_webdriver(get_chrome_options):
 @pytest.fixture(scope='function')
 def setup(request, get_webdriver):
     driver = get_webdriver
+    driver = EventFiringWebDriver(driver, MyListener())
     url = 'https://www.macys.com/'
     if request.cls is not None:
         request.cls.driver = driver
     driver.get(url)
-    driver.delete_all_cookies()
+    #driver.delete_all_cookies()
     if driver.find_element(By.ID, 'tinybox'):
         close_link = driver.find_element(By.ID, 'closeButton')
         if close_link:
@@ -35,3 +39,9 @@ def setup(request, get_webdriver):
     yield driver
     driver.quit()
 
+
+@pytest.fixture
+def dev_tools_listening():
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    driver = webdriver.Chrome(executable_path='C:/chromedriver', options=options)
